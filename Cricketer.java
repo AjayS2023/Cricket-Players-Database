@@ -1,22 +1,28 @@
 package CricketDatabase;
 
 public class Cricketer {
-    private String name;
+    private String firstName;
+    private String lastName;
     private boolean isRetired;
     private int age;
     private String country;
     private char gender;
 
-    public Cricketer(String name, boolean isRetired, int age, String country, char gender){
-        this.name = name;
+    public Cricketer(String firstName, String lastName, boolean isRetired, int age, String country, char gender){
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.isRetired = isRetired;
         this.age = age;
         this.country = country;
         this.gender = gender;
     }   
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String fName) {
+        this.firstName = fName;
+    }
+
+    public void setLastName(String lName){
+        this.lastName = lName;
     }
 
     public void setRetired(boolean retired) {
@@ -35,8 +41,12 @@ public class Cricketer {
         this.gender = gender;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName(){
+        return lastName;
     }
 
     public boolean isRetired(){

@@ -8,7 +8,6 @@ public class Database {
     private ArrayList<Bowler> bowlers = new ArrayList<>();
 
     public Database() {
-
         Batter batterOne = new Batter("Rahul", "Dravid", true, 50, "India", 'M', 40.35);
         Batter batterTwo = new Batter("Virat", "Kohli", false, 34, "India", 'M', 50.40);
         batters.add(batterOne);
@@ -37,15 +36,22 @@ public class Database {
     }
 
     public void getAllBatters() {
-        for(int i = 0; i < batters.size(); i++){
+        if (batters.isEmpty()) {
+            System.out.println("There are no batters in the database.");
+        }
+        for (int i = 0; i < batters.size(); i++) {
             System.out.println(batters.get(i).toString());
         }
     }
 
     public void getAllBowlers() {
-        for(int i = 0; i < bowlers.size(); i++){
+        if (bowlers.isEmpty()) {
+            System.out.println("There are no bowlers in the database.");
+        }
+        for (int i = 0; i < bowlers.size(); i++) {
             System.out.println(bowlers.get(i).toString());
         }
+        System.out.println(bowlers.toString());
     }
 
     public static void main(String[] args) {
@@ -58,8 +64,13 @@ public class Database {
             System.out.println("Please select an option from the below menu by typing a number: ");
             System.out.println("\t 1. Add a batter to the database.");
             System.out.println("\t 2. Add a bowler to the database.");
-            System.out.println("\t 3. Show me all batters in the database.");
-            System.out.println("\t 4. Show me all bowlers in the database.");
+            System.out.println("\t 3. Remove a batter from the database.");
+            System.out.println("\t 4. Remove a bowler from the database.");
+            System.out.println("\t 5. Edit a batter from the database.");
+            System.out.println("\t 6. Edit a bowler from the database.");
+            System.out.println("\t 8. Show me all batters in the database.");
+            System.out.println("\t 9. Show me all bowlers in the database.");
+            System.out.println();
 
             num = scan.nextInt();
             scan.nextLine();
@@ -73,10 +84,25 @@ public class Database {
                     break;
 
                 case 3:
-                    newDatabase.getAllBatters();
+                    newDatabase.removeBatter(scan, newDatabase);
                     break;
 
                 case 4:
+                    newDatabase.removeBowler(scan, newDatabase);
+                    break;
+
+                case 5:
+                    newDatabase.editBatter(scan, newDatabase);
+                    break;
+
+                case 6:
+                    break;
+
+                case 8:
+                    newDatabase.getAllBatters();
+                    break;
+
+                case 9:
                     newDatabase.getAllBowlers();
                     break;
             }
@@ -114,16 +140,17 @@ public class Database {
     }
 
     public void makeNewBowler(Scanner scan, Database database) {
+        Bowler newBowler;
+
         System.out.println("Enter bowler's first name:");
         String fName = scan.nextLine();
 
         System.out.println("Enter bowler's last name:");
         String lName = scan.nextLine();
-        
-        System.out.println("Has the bowler retired?");
-        boolean isRetired = scan.nextBoolean();
 
-        scan.nextLine();
+        System.out.println("Has the bowler retired? Y or N?");
+        char retired = scan.nextLine().charAt(0);
+        boolean isRetired = retired == 'Y';
 
         System.out.println("Enter bowler's age: ");
         int age = scan.nextInt();
@@ -132,14 +159,140 @@ public class Database {
         System.out.println("Enter bowler's country: ");
         String country = scan.nextLine();
 
-        System.out.println("Enter bowler's gender: ");
+        System.out.println("Enter bowler's gender. M or F?");
         String input = scan.next();
         char gender = input.charAt(0);
 
         System.out.println("Enter bowler's bowling average: ");
         double bowlingAverage = scan.nextDouble();
 
-        Bowler newBowler = new Bowler(fName, lName, isRetired, age, country, gender, bowlingAverage);
+        newBowler = new Bowler(fName, lName, isRetired, age, country, gender, bowlingAverage);
         database.addBowler(newBowler);
+    }
+
+    public void removeBatter(Scanner scan, Database database) {
+        if (batters.isEmpty()) {
+            System.out.println("There are no batters in the database.");
+            return;
+        }
+
+        System.out.println("What is the first name of the batter you wish to remove?");
+        String fName = scan.nextLine();
+        boolean exists = false;
+
+        for (int i = 0; i < batters.size(); i++) {
+            if (batters.get(i).getFirstName().equals(fName)) {
+                System.out.println("What is the last name of the batter you wish to remove?");
+                String lName = scan.nextLine();
+
+                if (batters.get(i).getLastName().equals(lName)) {
+                    database.removeBatter(batters.get(i));
+                    System.out.println("We have removed the batter.");
+                    exists = true;
+                    break;
+                }
+            }
+        }
+
+        if (!exists) {
+            System.out.println("This batter does not exist.");
+        }
+    }
+
+    public void removeBowler(Scanner scan, Database database) {
+        if (bowlers.isEmpty()) {
+            System.out.println("There are no bowlers in the database.");
+            return;
+        }
+
+        System.out.println("What is the first name of the bowler you wish to remove?");
+        String fName = scan.nextLine();
+        boolean exists = false;
+
+        for (int i = 0; i < bowlers.size(); i++) {
+            if (bowlers.get(i).getFirstName().equals(fName)) {
+                System.out.println("What is the last name of the bowler you wish to remove?");
+                String lName = scan.nextLine();
+
+                if (bowlers.get(i).getLastName().equals(lName)) {
+                    database.removeBowler(bowlers.get(i));
+                    System.out.println("We have removed the bowler.");
+                    exists = true;
+                    break;
+                }
+            }
+        }
+
+        if (!exists) {
+            System.out.println("This bowler does not exist.");
+        }
+    }
+
+    public void editBatter(Scanner scan, Database database) {
+        if (batters.isEmpty()) {
+            System.out.println("There are no batters in the database.");
+            return;
+        }
+        
+        System.out.println("What is the first name of the batter you would like to edit?");
+        String fName = scan.nextLine();
+        boolean exists = false;
+
+        for (int i = 0; i < batters.size(); i++) {
+            if (batters.get(i).getFirstName().equals(fName)) {
+                System.out.println("What is the last name of the bowler you wish to remove?");
+                String lName = scan.nextLine();
+
+                if (batters.get(i).getLastName().equals(lName)) {
+                    exists = true;
+                    System.out.println("Enter batter's first name:");
+                    String newFName = scan.nextLine();
+
+                    System.out.println("Enter batter's last name: ");
+                    String newLName = scan.nextLine();
+
+                    System.out.println("Has the batter retired?");
+                    boolean isRetired = scan.nextBoolean();
+
+                    scan.nextLine();
+
+                    System.out.println("Enter batter's age: ");
+                    int age = scan.nextInt();
+                    scan.nextLine();
+
+                    System.out.println("Enter batter's country: ");
+                    String country = scan.nextLine();
+
+                    System.out.println("Enter batter's gender: ");
+                    String input = scan.next();
+                    char gender = input.charAt(0);
+
+                    System.out.println("Enter batter's batting average: ");
+                    double battingAverage = scan.nextDouble();
+
+                    Batter savedBatter = batters.get(i);
+                    savedBatter.setFirstName(newFName);
+                    savedBatter.setLastName(newLName);
+                    savedBatter.setRetired(isRetired);
+                    savedBatter.setAge(age);
+                    savedBatter.setCountry(country);
+                    savedBatter.setGender(gender);
+                    savedBatter.setBattingAverage(battingAverage);
+
+                    database.removeBatter(batters.get(i));
+                    database.addBatter(savedBatter);
+                    
+                    System.out.println("The batter has been modified.");
+                }
+            }
+        }
+
+        if (!exists) {
+            System.out.println("This batter does not exist.");
+        }
+    }
+
+    public void editBowler(Scanner scan, Database database){
+        
     }
 }

@@ -51,7 +51,6 @@ public class Database {
         for (int i = 0; i < bowlers.size(); i++) {
             System.out.println(bowlers.get(i).toString());
         }
-        System.out.println(bowlers.toString());
     }
 
     public static void main(String[] args) {
@@ -68,8 +67,8 @@ public class Database {
             System.out.println("\t 4. Remove a bowler from the database.");
             System.out.println("\t 5. Edit a batter from the database.");
             System.out.println("\t 6. Edit a bowler from the database.");
-            System.out.println("\t 8. Show me all batters in the database.");
-            System.out.println("\t 9. Show me all bowlers in the database.");
+            System.out.println("\t 7. Show me all batters in the database.");
+            System.out.println("\t 8. Show me all bowlers in the database.");
             System.out.println();
 
             num = scan.nextInt();
@@ -96,13 +95,14 @@ public class Database {
                     break;
 
                 case 6:
+                    newDatabase.editBowler(scan, newDatabase);
                     break;
 
-                case 8:
+                case 7:
                     newDatabase.getAllBatters();
                     break;
 
-                case 9:
+                case 8:
                     newDatabase.getAllBowlers();
                     break;
             }
@@ -116,10 +116,14 @@ public class Database {
         System.out.println("Enter batter's last name: ");
         String lName = scan.nextLine();
 
-        System.out.println("Has the batter retired?");
-        boolean isRetired = scan.nextBoolean();
-
-        scan.nextLine();
+        System.out.println("Has the batter retired? Y or N?");
+        char retired = scan.nextLine().charAt(0);
+        boolean isRetired;
+        if(retired == 'Y'){
+            isRetired = true;
+        } else {
+            isRetired = false;
+        }
 
         System.out.println("Enter batter's age: ");
         int age = scan.nextInt();
@@ -128,7 +132,7 @@ public class Database {
         System.out.println("Enter batter's country: ");
         String country = scan.nextLine();
 
-        System.out.println("Enter batter's gender: ");
+        System.out.println("Enter batter's gender. M or F?");
         String input = scan.next();
         char gender = input.charAt(0);
 
@@ -150,7 +154,12 @@ public class Database {
 
         System.out.println("Has the bowler retired? Y or N?");
         char retired = scan.nextLine().charAt(0);
-        boolean isRetired = retired == 'Y';
+        boolean isRetired;
+        if (retired == 'Y') {
+            isRetired = true;
+        } else {
+            isRetired = false;
+        }
 
         System.out.println("Enter bowler's age: ");
         int age = scan.nextInt();
@@ -233,14 +242,14 @@ public class Database {
             System.out.println("There are no batters in the database.");
             return;
         }
-        
+
         System.out.println("What is the first name of the batter you would like to edit?");
         String fName = scan.nextLine();
         boolean exists = false;
 
         for (int i = 0; i < batters.size(); i++) {
             if (batters.get(i).getFirstName().equals(fName)) {
-                System.out.println("What is the last name of the bowler you wish to remove?");
+                System.out.println("What is the last name of the batter you wish to edit?");
                 String lName = scan.nextLine();
 
                 if (batters.get(i).getLastName().equals(lName)) {
@@ -251,10 +260,14 @@ public class Database {
                     System.out.println("Enter batter's last name: ");
                     String newLName = scan.nextLine();
 
-                    System.out.println("Has the batter retired?");
-                    boolean isRetired = scan.nextBoolean();
-
-                    scan.nextLine();
+                    System.out.println("Has the batter retired? Y or N?");
+                    char retired = scan.nextLine().charAt(0);
+                    boolean isRetired;
+                    if (retired == 'Y') {
+                        isRetired = true;
+                    } else {
+                        isRetired = false;
+                    }
 
                     System.out.println("Enter batter's age: ");
                     int age = scan.nextInt();
@@ -263,7 +276,7 @@ public class Database {
                     System.out.println("Enter batter's country: ");
                     String country = scan.nextLine();
 
-                    System.out.println("Enter batter's gender: ");
+                    System.out.println("Enter batter's gender. M or F?");
                     String input = scan.next();
                     char gender = input.charAt(0);
 
@@ -281,7 +294,7 @@ public class Database {
 
                     database.removeBatter(batters.get(i));
                     database.addBatter(savedBatter);
-                    
+
                     System.out.println("The batter has been modified.");
                 }
             }
@@ -292,7 +305,71 @@ public class Database {
         }
     }
 
-    public void editBowler(Scanner scan, Database database){
-        
+    public void editBowler(Scanner scan, Database database) {
+        if (bowlers.isEmpty()) {
+            System.out.println("There are no bowlers in the database.");
+            return;
+        }
+
+        System.out.println("What is the first name of the bowler you would like to edit?");
+        String fName = scan.nextLine();
+        boolean exists = false;
+
+        for (int i = 0; i < bowlers.size(); i++) {
+            if (bowlers.get(i).getFirstName().equals(fName)) {
+                System.out.println("What is the last name of the bowler you wish to edit?");
+                String lName = scan.nextLine();
+
+                if (bowlers.get(i).getLastName().equals(lName)) {
+                    exists = true;
+                    System.out.println("Enter bowler's first name:");
+                    String newFName = scan.nextLine();
+
+                    System.out.println("Enter bowler's last name: ");
+                    String newLName = scan.nextLine();
+
+                    System.out.println("Has the bowler retired? Y or N?");
+                    char retired = scan.nextLine().charAt(0);
+                    boolean isRetired;
+                    if (retired == 'Y') {
+                        isRetired = true;
+                    } else {
+                        isRetired = false;
+                    }
+
+                    System.out.println("Enter bowler's age: ");
+                    int age = scan.nextInt();
+                    scan.nextLine();
+
+                    System.out.println("Enter bowler's country: ");
+                    String country = scan.nextLine();
+
+                    System.out.println("Enter bowler's gender. M or F?");
+                    String input = scan.next();
+                    char gender = input.charAt(0);
+
+                    System.out.println("Enter bowler's bowling average: ");
+                    double bowlingAverage = scan.nextDouble();
+
+                    Bowler savedBowler = bowlers.get(i);
+                    savedBowler.setFirstName(newFName);
+                    savedBowler.setLastName(newLName);
+                    savedBowler.setRetired(isRetired);
+                    savedBowler.setAge(age);
+                    savedBowler.setCountry(country);
+                    savedBowler.setGender(gender);
+                    savedBowler.setBowlingAverage(bowlingAverage);
+
+                    database.removeBowler(bowlers.get(i));
+                    database.addBowler(savedBowler);
+
+                    System.out.println("The bowler has been modified.");
+                }
+            }
+        }
+
+        if (!exists) {
+            System.out.println("This bowler does not exist.");
+        }
     }
 }

@@ -23,6 +23,6 @@ public class Bowler extends Cricketer{
         " , Age: " + this.getAge() + 
         " , Country: " + this.getCountry() + 
         " , Gender: " + this.getGender() + 
-        " , Batting Average " + this.getBowlingAverage();
+        " , Bowling Average " + this.getBowlingAverage();
     }
 }
